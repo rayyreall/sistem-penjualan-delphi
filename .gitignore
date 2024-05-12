@@ -1,0 +1,10 @@
+*.exe
+*.res
+*.dll
+*.drc
+*.dcu
+*.dof
+
+src/**/*.dcu
+src/**/*.dfm
+src/**/*.ddp

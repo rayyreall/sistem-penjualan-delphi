@@ -1,0 +1,28 @@
+program SistemPenjualan;
+
+uses
+  Forms,
+  LoginView in 'src\views\LoginView.pas' {LoginViews},
+  DataModule in 'src\utils\DataModule.pas' {DataLib: TDataModule},
+  UserModel in 'src\model\UserModel.pas',
+  RoleEnum in 'src\types\RoleEnum.pas',
+  UserRepository in 'src\repository\UserRepository.pas',
+  RegisterAccountView in 'src\views\RegisterAccountView.pas' {RegisterAccount},
+  LoginService in 'src\services\LoginService.pas',
+  Indonesia in 'src\lang\Indonesia.pas',
+  English in 'src\lang\English.pas',
+  LanguageAdapter in 'src\lang\LanguageAdapter.pas',
+  LangEnum in 'src\types\LangEnum.pas',
+  LanguageImpl in 'src\types\LanguageImpl.pas',
+  Authentication in 'src\auth\Authentication.pas',
+  DatabaseRepository in 'src\repository\DatabaseRepository.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TLoginViews, LoginViews);
+  Application.CreateForm(TDataLib, DataLib);
+  Application.CreateForm(TRegisterAccount, RegisterAccount);
+  Application.Run;
+end.
