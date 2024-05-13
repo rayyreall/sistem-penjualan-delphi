@@ -15,6 +15,7 @@ type
      constructor Create (const UserName, password: string);
      destructor Destroy; override;
      function getUser: TUserModel;
+     procedure InsertQuery (model: TUserModel);
    end;
 
 implementation
@@ -88,6 +89,28 @@ end;
 destructor TUserRepository.Destroy;
 begin
   inherited Destroy;
+end;
+
+procedure TUserRepository.InsertQuery (model: TUserModel);
+var query: TZQuery;
+begin
+   database := TDatabaseRepository.GetInstance();
+   query := TZQuery.Create(nil);
+
+   query.Connection := database.getConnection;
+   try
+     query.SQL.Text := 'INSERT INTO user (username, full_name, email, password, nik, telp, is_active, role) VALUES (:username, :full_name, :email, :password, :nik, :telp, :is_active, :role)';
+     query.ParamByName('username').AsString := model.getUsername;
+     query.ParamByName('full_name').AsString := model.getFullName;
+     query.ParamByName('email').AsString := model.getEmail;
+     query.ParamByName('password').AsString := model.getPassword;
+     query.ParamByName('nik').AsString := model.getNIK;
+     query.ParamByName('telp').AsString := model.getTelp;
+     query.ExecSQL;
+   finally
+     query.Free;
+     database.disconnect;
+   end;
 end;
 
 end.

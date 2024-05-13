@@ -13,6 +13,7 @@ type
     destructor Destroy; override;
     class function GetInstance: TDatabaseRepository;
     function getConnection: TZConnection;
+    procedure disconnect;
 
     end;
 implementation
@@ -27,7 +28,13 @@ end;
 
 function  TDatabaseRepository.getConnection: TZConnection;
 begin
+  if not FConnection.Connected then
+    FConnection.Connect;
   getConnection := FConnection;
+end;
+procedure TDatabaseRepository.disconnect;
+begin
+  FConnection.Disconnect;
 end;
 
 class function TDatabaseRepository.GetInstance: TDatabaseRepository;
