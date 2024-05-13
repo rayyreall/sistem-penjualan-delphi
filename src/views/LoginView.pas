@@ -14,7 +14,7 @@ type
     edtUsername: TEdit;
     grp2: TGroupBox;
     edtPassword: TEdit;
-    btn1: TButton;
+    btnLogin: TButton;
     btnClose: TButton;
     procedure closeButtonClick(Sender: TObject);
     procedure loginButtonClick(Sender: TObject);
