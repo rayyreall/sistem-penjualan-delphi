@@ -12,6 +12,8 @@ type
   public
     destructor Destroy; override;
     class function GetInstance: TDatabaseRepository;
+    class function getQuery: TZQuery;
+    class procedure closeQuery;
     function getConnection: TZConnection;
     procedure disconnect;
 
@@ -19,6 +21,7 @@ type
 implementation
 
 var FInstance: TDatabaseRepository = nil;
+  query: TZQuery = nil;
 
 constructor TDatabaseRepository.Create;
 begin
@@ -41,7 +44,29 @@ class function TDatabaseRepository.GetInstance: TDatabaseRepository;
 begin
   if FInstance = nil then
     FInstance := TDatabaseRepository.Create;
+  if not FInstance.getConnection.Connected then
+    Finstance.getConnection.Connect;
   GetInstance := FInstance;
+end;
+
+class function TDatabaseRepository.getQuery: TZQuery;
+var database: TDatabaseRepository;
+begin
+  if query = nil then
+  begin
+    database := GetInstance;
+    query := TZQuery.Create(nil);
+    query.Connection := database.getConnection;
+  end;
+  getQuery := query;
+end;
+class procedure TDatabaseRepository.closeQuery;
+begin
+  if not(query = nil) then
+  begin
+    query.Close;
+    query := nil;
+  end;
 end;
 
 destructor TDatabaseRepository.Destroy;

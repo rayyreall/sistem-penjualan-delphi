@@ -12,6 +12,8 @@ type
     function messageInputMaxLengthError: string;
     function messageTelpNumberIndonesianError: string;
     function messagePasswordNotMatchError: string;
+    function messageRoleUserNotValidError: string;
+    function messageDashboardHeading(const name: string): string;
   end;
 
 implementation

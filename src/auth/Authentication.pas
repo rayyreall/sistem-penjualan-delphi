@@ -9,13 +9,15 @@ type TAuth = class
     class procedure SaveAuth(user: TUserModel);
     class function getUserInfo: TUserModel;
     class procedure DeleteAuth (const UserName: string);
+    class function isLogin: Boolean;
   end;
+
+
+var userClient: TUserModel;
 
 implementation
 
 
-
-var userClient: TUserModel;
 
 
 class procedure TAuth.SaveAuth(user: TUserModel);
@@ -26,7 +28,11 @@ end;
 class procedure TAuth.DeleteAuth(const UserName: string);
 begin
   if userClient.getUsername() = Username then
-    userClient.Free;
+  begin
+     userClient.Free;
+     userClient := nil;
+  end;
+
 end;
 
 class function TAuth.getUserInfo: TUserModel;
@@ -34,6 +40,13 @@ begin
   getUserInfo := userClient;
 end;
 
+class function TAuth.isLogin: Boolean;
+begin
+  isLogin := False;
+  if userClient <> nil then
+    isLogin := True;
+end;
 
-
+initialization
+  userClient := nil;
 end.

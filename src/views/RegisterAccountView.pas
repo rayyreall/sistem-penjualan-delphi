@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Menus, LanguageAdapter, LangEnum, DashboardView,
-  RegisterService, UserModel;
+  RegisterService, UserModel, Utils;
 
 type
   TRegisterAccount = class(TForm)
@@ -29,20 +29,25 @@ type
     edtUsername: TEdit;
     grpTelp: TGroupBox;
     edtTelp: TEdit;
-    pnlFourth: TPanel;
+    pnlFifty: TPanel;
     grpPassword: TGroupBox;
     edtPassword: TEdit;
     grpConfirmPassword: TGroupBox;
     edtConfirmPassword: TEdit;
+    pnlFourth: TPanel;
+    rgRole: TRadioGroup;
     procedure btnCancelClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure nextFirst;
     procedure nextSecond;
     procedure nextThird;
+    procedure nextFourth;
     procedure loginAction;
     procedure prevFirst;
     procedure prevSecond;
     procedure prevThird;
+    procedure prevFourth;
+    procedure prevFifty;
     procedure btnNextClick(Sender: TObject);
     procedure btnPrevClick(Sender: TObject);
     procedure edtNIKKeyPress(Sender: TObject; var Key: Char);
@@ -79,7 +84,7 @@ end;
 
 procedure TRegisterAccount.FormCreate(Sender: TObject);
 begin
-  Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
+  Speak := TUtils.Create.Speak;
   btnPrev.Enabled := False;
   pnlFirst.Visible := True;
 end;
@@ -107,8 +112,19 @@ begin
   begin
     pnlThird.Visible := False;
     pnlFourth.Visible := True;
+  end;
+end;
+procedure TRegisterAccount.nextFourth;
+var role: string;
+begin
+  role := rgRole.Items[rgRole.ItemIndex];
+  if TRegisterService.isValidateNextFourth(role) then
+  begin
+    pnlFourth.Visible := False;
+    pnlFifty.Visible := True;
     btnNext.Caption := 'REGISTER';
   end;
+
 end;
 procedure TRegisterAccount.prevFirst;
 begin
@@ -125,9 +141,18 @@ procedure TRegisterAccount.prevThird;
 begin
   pnlThird.Visible := True;
   pnlFourth.Visible := False;
-  btnNext.Caption := 'NEXT';
-end;
 
+end;
+procedure TRegisterAccount.prevFourth;
+begin
+  pnlFourth.Visible := True;
+  pnlFifty.Visible := False;
+end;
+procedure TRegisterAccount.prevFifty;
+begin
+  pnlFourth.Visible := True;
+  pnlFifty.Visible := False;
+end;
 procedure TRegisterAccount.btnNextClick(Sender: TObject);
 begin
   if pnlFirst.Visible then
@@ -137,12 +162,16 @@ begin
   else if pnlThird.Visible then
     nextThird
   else if pnlFourth.Visible then
+    nextFourth
+  else if pnlFifty.Visible then
     loginAction;
 end;
 
 procedure TRegisterAccount.btnPrevClick(Sender: TObject);
 begin
-  if pnlFourth.Visible then
+  if pnlFifty.Visible then
+    prevFourth
+  else if pnlFourth.Visible then
     prevThird
   else if pnlThird.Visible then
     prevSecond
@@ -179,8 +208,10 @@ begin
         .setFullName(edtFirstName.Text + ' '+ edtLastName.Text)
         .setEmail(edtEmail.Text)
         .setTelp(edtTelp.Text)
+        .setRole(TUtils.stringToRoleFromUser(rgRole.Items[rgRole.ItemIndex]))
+        .setAlamat('')
         .setNIK(edtNIK.Text)
-        .setIsActive(True);
+        .setIsActive(TUtils.databaseConverterToBoolean(1));
     end;
   end;
 end;

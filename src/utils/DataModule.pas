@@ -10,7 +10,7 @@ type
   TDataLib = class(TDataModule)
     conn: TZConnection;
     querySQL: TZQuery;
-    dsdata: TDataSource;
+    dsUser: TDataSource;
   private
     { Private declarations }
   public

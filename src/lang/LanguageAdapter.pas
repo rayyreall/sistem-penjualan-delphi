@@ -19,6 +19,8 @@ type TLanguageAdapter = class
     function getMessageInputMaxLengthError: string;
     function getMessageTelpNumberIndonesianError: string;
     function getMessagePasswordNotMatchError: string;
+    function getMessageRoleUserNotValidError: string;
+    function getMessageDashboardHeading(const name: string): string;
     constructor Create (lang: TLangEnum);
     end;
 
@@ -75,6 +77,16 @@ end;
 function TLanguageAdapter.getMessagePasswordNotMatchError: string;
 begin
   getMessagePasswordNotMatchError := FSpeak.messagePasswordNotMatchError;
+end;
+
+function TLanguageAdapter.getMessageRoleUserNotValidError: string;
+begin
+  getMessageRoleUserNotValidError := FSpeak.messageRoleUserNotValidError;
+end;
+
+function TLanguageAdapter.getMessageDashboardHeading(const name: string): string;
+begin
+  getMessageDashboardHeading := FSpeak.messageDashboardHeading(name);
 end;
 
 end.
