@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, UserModel, StdCtrls, ExtCtrls,  LanguageAdapter, LanguageImpl;
+  Dialogs, UserModel, StdCtrls, ExtCtrls,  LanguageAdapter, LanguageImpl, DashboardView;
 
 type
   TLoginViews = class(TForm)
@@ -16,10 +16,11 @@ type
     edtPassword: TEdit;
     btnLogin: TButton;
     btnClose: TButton;
+    chkPassword: TCheckBox;
     procedure closeButtonClick(Sender: TObject);
     procedure loginButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    function createUserModel(UserName, password: string): TUserModel;
+    procedure chkPasswordClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,19 +40,21 @@ uses LoginService, RegisterAccountView, LangEnum, RoleEnum, Authentication;
 
 procedure TLoginViews.closeButtonClick(Sender: TObject);
 begin
-  Close;
+  if MessageDlg(Speak.getMessageCancelButton, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    Close;
 end;
 
 procedure TLoginViews.loginButtonClick(Sender: TObject);
 var registerView: TRegisterAccount;
 username, password: string;
 service: TLoginService;
+dashboardView: TDashboardViews;
 role: TRoleEnum;
 begin
   username :=  edtUsername.Text;
   password := edtPassword.Text;
   service := TLoginService.Create;
-  
+
   service.InitAccountUser(username, password);
 
   if service.isAccountValidate then
@@ -67,12 +70,13 @@ begin
     else
       MessageDlg(Speak.getMessageLoginSuccess(service.getUser.getFullName, 'Kasir'), mtInformation, [mbOK], 0);
 
-    service.clearService;
     service.Destroy;
-    
-    registerView := TRegisterAccount.Create(Application);
-    registerView.Show;
+
+    dashboardView := TDashboardViews.Create(Application);
     Hide;
+    dashboardView.ShowModal;
+    Close;
+
   end
   else
   begin
@@ -87,19 +91,12 @@ begin
   Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
 end;
 
-function TLoginViews.createUserModel(UserName, password: string): TUserModel;
-var model: TUserModel;
+procedure TLoginViews.chkPasswordClick(Sender: TObject);
 begin
-    model := TUserModel.Create;
-    model := model
-              .setID(0)
-              .setUsername(UserName)
-              .setPassword(password)
-              .setFullName('Rizki Firdaus')
-              .setRole(RoleEnum.OWNER)
-              .setEmail('rizkifirdaus2902@gmail.com')
-              .setIsActive(true);
-    createUserModel := model;
+  if chkPassword.Checked then
+    edtPassword.PasswordChar := #0
+  else
+    edtPassword.PasswordChar := '*';
 end;
 
 end.

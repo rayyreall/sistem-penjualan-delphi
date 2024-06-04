@@ -14,11 +14,18 @@ type
     function messageInputMaxLengthError: string;
     function messageTelpNumberIndonesianError: string;
     function messagePasswordNotMatchError: string;
+    function messageRoleUserNotValidError: string;
+    function messageDashboardHeading(const name: string): string;
   end;
 
 implementation
 
 uses SysUtils;
+
+function TEnglish.messageRoleUserNotValidError: string;
+begin
+  messageRoleUserNotValidError := 'Sorry, the role account you entered is not registered in the database';
+end;
 
 function TEnglish.messageAccountError: string;
 begin
@@ -58,6 +65,11 @@ end;
 function TEnglish.messagePasswordNotMatchError: string;
 begin
   messagePasswordNotMatchError := 'Your password is incorrect, please enter the password correctly!';
+end;
+
+function TEnglish.messageDashboardHeading(const name: string): string;
+begin
+  messageDashboardHeading := 'Hello, Welcome ' + name;
 end;
 
 end.

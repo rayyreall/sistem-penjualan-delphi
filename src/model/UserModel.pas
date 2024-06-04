@@ -84,7 +84,7 @@ end;
 
 function TUserModel.getUsername: string;
 begin
-  getUsername := FUsername;
+    getUsername := FUsername;
 end;
 function TUserModel.setUsername(Value: string): TUserModel;
 begin

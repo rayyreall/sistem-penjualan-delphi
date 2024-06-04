@@ -15,11 +15,18 @@ type
     function messageInputMaxLengthError: string;
     function messageTelpNumberIndonesianError: string;
     function messagePasswordNotMatchError: string;
+    function messageRoleUserNotValidError: string;
+    function messageDashboardHeading(const name: string): string;
   end;
 
 implementation
 
 uses SysUtils;
+
+function TIndonesia.messageRoleUserNotValidError: string;
+begin
+  messageRoleUserNotValidError := 'Mohon maaf role akun yang anda masukkan tidak terdaftar di database';
+end;
 
 function TIndonesia.messageAccountError: string;
 begin
@@ -58,6 +65,11 @@ end;
 function TIndonesia.messagePasswordNotMatchError: string;
 begin
   messagePasswordNotMatchError := 'Password anda tidak sesuai, Harap masukkan password dengan benar!';
+end;
+
+function TIndonesia.messageDashboardHeading(const name: string): string;
+begin
+  messageDashboardHeading := 'Halo, Selamat datang ' + name;
 end;
 
 

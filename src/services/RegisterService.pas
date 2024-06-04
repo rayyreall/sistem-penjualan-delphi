@@ -2,7 +2,7 @@ unit RegisterService;
 
 interface
 
-uses UserModel, SysUtils, Dialogs, LanguageAdapter, LangEnum;
+uses UserModel, SysUtils, Dialogs, LanguageAdapter, LangEnum, Utils;
 
 type TRegisterService = class
   private
@@ -16,6 +16,7 @@ type TRegisterService = class
     class function isValidateNextSecond (const email, NIK: string): Boolean;
     class function isValidateNextThird (const telp, username: string): Boolean;
     class function isValidateNextLogin (const password, confirmPassword: string): Boolean;
+    class function isValidateNextFourth (role: string): Boolean;
   end;
 
 implementation
@@ -40,7 +41,7 @@ class function TRegisterService.isValidateNextFirst (const firstName, lastName: 
 var isValid: Boolean;
 Speak: TLanguageAdapter;
 begin
-  Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
+  Speak := TUtils.Create.Speak;
   isValid := False;
 
   if firstName = '' then
@@ -60,7 +61,7 @@ class function TRegisterService.isValidateNextSecond (const email, NIK: string):
 var isValid: Boolean;
 speak: TLanguageAdapter;
 begin
-  Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
+  Speak := TUtils.Create.Speak;
   isValid := False;
   if email = '' then
     MessageDlg(Speak.getMessageNotBlank('email'), mtError, [mbOK], 0)
@@ -79,7 +80,7 @@ class function TRegisterService.isValidateNextThird (const telp, username: strin
 var isValid: Boolean;
 speak: TLanguageAdapter;
 begin
-  Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
+  Speak := TUtils.Create.Speak;
   isValid := False;
 
   if telp = '' then
@@ -101,7 +102,7 @@ class function TRegisterService.isValidateNextLogin (const password, confirmPass
 var isValid: Boolean;
 speak: TLanguageAdapter;
 begin
-  Speak := TLanguageAdapter.Create(LangEnum.INDONESIA);
+  Speak := TUtils.Create.Speak;
   isValid := False;
 
   if password = '' then
@@ -113,6 +114,22 @@ begin
   else
     isValid := True;
   isValidateNextLogin:= isValid;
+end;
+
+class function TRegisterService.isValidateNextFourth (role: string): Boolean;
+var isValid: Boolean;
+speak: TLanguageAdapter;
+begin
+  Speak := TUtils.Create.Speak;
+  isValid := False;
+  role := UpperCase(role);
+
+  if (role = 'OWNER') or (role = 'ADMIN') or (role = 'KASIR') then
+    isValid := True
+  else
+    MessageDlg(Speak.getMessageRoleUserNotValidError, mtError, [mbOK], 0);
+
+  isValidateNextFourth := isValid;
 end;
 
 end.

@@ -2,7 +2,7 @@ unit UserRepository;
 
 interface
 
-uses UserModel, ZConnection, DatabaseRepository,  ZDataset, RoleEnum;
+uses UserModel, ZConnection, DatabaseRepository,  ZDataset, RoleEnum, Utils, DB, ADODB;
 
 type
   TUserRepository = class
@@ -16,6 +16,9 @@ type
      destructor Destroy; override;
      function getUser: TUserModel;
      procedure InsertQuery (model: TUserModel);
+     class function getAllUser: TDataSource;
+     class function getUserByFilterName (const keyword: string): TDataSource;
+     class function getUserByFilter (const keyword, id: string): TDataSource;
    end;
 
 implementation
@@ -40,7 +43,7 @@ end;
 function TUserRepository.InitRepository (const UserName, password: string): Boolean;
 var query: TZQuery;
 begin
-     database := TDatabaseRepository.GetInstance();
+     database := TDatabaseRepository.GetInstance;
      query := TZQuery.Create(nil);
      try
        query.Connection := Database.getConnection;
@@ -94,23 +97,63 @@ end;
 procedure TUserRepository.InsertQuery (model: TUserModel);
 var query: TZQuery;
 begin
-   database := TDatabaseRepository.GetInstance();
+   database := TDatabaseRepository.GetInstance;
    query := TZQuery.Create(nil);
 
    query.Connection := database.getConnection;
    try
-     query.SQL.Text := 'INSERT INTO user (username, full_name, email, password, nik, telp, is_active, role) VALUES (:username, :full_name, :email, :password, :nik, :telp, :is_active, :role)';
+     query.SQL.Text := 'INSERT INTO user (username, full_name, email, password, nik, telp, alamat, is_active, role) VALUES (:username, :full_name, :email, :password, :nik, :telp, :alamat,:is_active, :role)';
      query.ParamByName('username').AsString := model.getUsername;
      query.ParamByName('full_name').AsString := model.getFullName;
      query.ParamByName('email').AsString := model.getEmail;
      query.ParamByName('password').AsString := model.getPassword;
      query.ParamByName('nik').AsString := model.getNIK;
      query.ParamByName('telp').AsString := model.getTelp;
+     query.ParamByName('alamat').AsString := model.getAlamat;
+     query.ParamByName('role').AsString := TUtils.roleToStringFromUser(model.getRole);
+     query.ParamByName('is_active').AsBoolean := model.getIsActive;
      query.ExecSQL;
    finally
-     query.Free;
-     database.disconnect;
+    // query.Free;
+     //database.disconnect;
    end;
+end;
+
+class function TUserRepository.getUserByFilter (const keyword, id: string): TDataSource;
+var query: TZQuery;
+dataSourceUser: TDataSource;
+begin
+  query := TDatabaseRepository.getQuery;
+  query.Close;
+
+  query.SQL.Text := 'SELECT * FROM user WHERE :id LIKE :keyword';
+  query.Params.ParamByName('id').AsString := id;
+  query.Params.ParamByName('keyword').AsString := '%' + Keyword + '%';
+  query.Open;
+
+  dataSourceUser := TDataSource.Create(nil);
+  dataSourceUser.DataSet := query;
+
+  getUserByFilter := dataSourceUser;
+end;
+class function  TUserRepository.getAllUser: TDataSource;
+var query: TZQuery;
+dataSourceUser: TDataSource ;
+begin
+  query := TDatabaseRepository.getQuery;
+   query.Close;
+  query.SQL.Text := 'SELECT * FROM user';
+  query.Open;
+
+  dataSourceUser := TDataSource.Create(nil);
+  dataSourceUser.DataSet := query;
+
+  getAllUser := dataSourceUser;
+end;
+
+class function TUserRepository.getUserByFilterName (const keyword: string): TDataSource;
+begin
+  getUserByFilterName := getUserByFilter(keyword, 'username');
 end;
 
 end.
