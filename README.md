@@ -36,7 +36,7 @@ Sistem Penjualan adalah aplikasi sederhana yang dibangun menggunakan Delphi untu
    ```
 2. **Masuk Ke folder**:
     ```bash
-    cd NatasyaDeviana_4c
+    cd sistem-penjualan-delphi
     ```
 3. **Menjalankan database MySQL**
     - Jalankan database mysql anda terlebih dahulu bisa menggunakan xampp, laragon, dll (direkomendasikan menggunakan port: 3306,
