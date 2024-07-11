@@ -1,7 +1,7 @@
 object FormKustomer: TFormKustomer
-  Left = 453
-  Top = 45
-  Width = 555
+  Left = 509
+  Top = 214
+  Width = 689
   Height = 647
   Caption = 'Kustomer'
   Color = clBtnFace
@@ -191,6 +191,7 @@ object FormKustomer: TFormKustomer
     Height = 33
     Caption = 'BATAL'
     TabOrder = 10
+    OnClick = btnCloseClick
   end
   object dbgrd1: TDBGrid
     Left = 8
@@ -212,5 +213,14 @@ object FormKustomer: TFormKustomer
     Width = 361
     Height = 27
     TabOrder = 12
+  end
+  object btnCetak: TButton
+    Left = 528
+    Top = 248
+    Width = 75
+    Height = 33
+    Caption = 'CETAK'
+    TabOrder = 13
+    OnClick = btnCetakClick
   end
 end

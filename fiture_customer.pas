@@ -29,6 +29,7 @@ type
     btnClose: TButton;
     dbgrd1: TDBGrid;
     edtFilter: TEdit;
+    btnCetak: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnInsertClick(Sender: TObject);
@@ -36,6 +37,8 @@ type
     procedure btnUpdateClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure dbgrd1CellClick(Column: TColumn);
+    procedure btnCetakClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
   private
     procedure closeInput;
     procedure openInput;
@@ -239,6 +242,19 @@ begin
   openInput;
   btnUpdate.Enabled := True;
   btnDelete.Enabled := True;
+end;
+
+procedure TFormKustomer.btnCetakClick(Sender: TObject);
+begin
+  DataModule3.frxrprtKustomer.ShowReport();
+end;
+
+procedure TFormKustomer.btnCloseClick(Sender: TObject);
+begin
+ closeInput;
+  clear;
+  btnNew.Enabled := True;
+  ResetFormData;
 end;
 
 end.
