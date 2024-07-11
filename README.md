@@ -1,8 +1,8 @@
 # Halo! Semua 👋
 
 ## 🌟 Perkenalkan saya
-- **Nama:** Natasya Deviana
-- **NPM:** 2110010454
+- **Nama:** Muhammad Rizki Firdaus
+- **NPM:** 2210010466
 - **Kelas:** 4C Reg Pagi FTI UNISKA Banjarbaru
 - **Jurusan:** Teknik Informatika
 - **Kampus:** Universitas Islam Kalimantan Muhammad Arsyad Al Banjari Banjarmasin 
@@ -32,7 +32,7 @@ Sistem Penjualan adalah aplikasi sederhana yang dibangun menggunakan Delphi untu
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/Natasyadvn/NatasyaDeviana_4C.git
+   git clone https://github.com/rayyreall/sistem-penjualan-delphi.git
    ```
 2. **Masuk Ke folder**:
     ```bash
